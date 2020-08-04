@@ -1,14 +1,16 @@
 {
-  "name": "redis-query-mongoose",
+  "name": "query-builder-redis",
   "version": "1.0.0",
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:<repository>"
+    "url": "git@github.com:EyeOfCode/query-builder-redis.git"
   },
   "keywords": [
     "npm",
     "mongoose-redis",
+    "query-builder",
+    "query-builder-redis",
     "redis"
   ],
   "author": "eyeofcode",
