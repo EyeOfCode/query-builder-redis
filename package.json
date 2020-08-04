@@ -1,0 +1,19 @@
+{
+  "name": "redis-query-mongoose",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:<repository>"
+  },
+  "keywords": [
+    "npm",
+    "mongoose-redis",
+    "redis"
+  ],
+  "author": "eyeofcode",
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "redis": "^3.0.2"
+  }
+}
