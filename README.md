@@ -20,6 +20,28 @@ or
 const queryBuilderRedis = require('query-builder').queryBuilderRedis;
 ```
 
+Config on env file
+```env
+REDIS_PORT=6379
+REDIS_HOST=redis
+REDIS_DB=0
+```
+Config on docker (optional)
+```yml
+  redis:
+    image: redis:5.0.3
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis-data:/data
+```
+```yml
+volumes:
+  redis-data:
+    driver: local
+```
+
 Use query builder mongoose
 ```js
 const { queryBuilder } = require('query-builder'); 
@@ -56,25 +78,3 @@ const res = await queryBuilder.getQuery(model, Query);
 | `clearKeyRedis` |  | Clear key redis all |
 | `getKeyRedis` |  | Get all key redis |
 | `clearKeyRedisById` | `key` | Clear redis by `key` |
-
-Config on env file
-```env
-REDIS_PORT=6379
-REDIS_HOST=redis
-REDIS_DB=0
-```
-Config on docker (optional)
-```yml
-  redis:
-    image: redis:5.0.3
-    restart: always
-    ports:
-      - 6379:6379
-    volumes:
-      - redis-data:/data
-```
-```yml
-volumes:
-  redis-data:
-    driver: local
-```
