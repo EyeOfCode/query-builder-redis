@@ -78,12 +78,7 @@ const aggregateQuery = async (model, query) => {
   return model.aggregate(query);
 };
 
-const clearUserAgent = async (model, date) => {
-  return model.deleteMany({ createdAt: { $lt: date } }).exec();
-};
-
 module.exports = {
-  clearUserAgent,
   getList,
   getById,
   getOne,

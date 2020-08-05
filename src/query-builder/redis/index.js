@@ -86,7 +86,6 @@ const clearKeyRedisById = async (id) => {
 };
 
 module.exports = {
-  clearUserAgent,
   getList,
   getById,
   getOne,
