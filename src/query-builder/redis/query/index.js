@@ -21,6 +21,11 @@ const notSet = [
   "restore",
   "deleteOne",
   "remove",
+  "deleteMany",
+  "aggregate",
+  "update",
+  "updateOne",
+  "updateMany",
 ];
 
 const getDB = async (model, arguments, findData) => {
@@ -44,12 +49,11 @@ const getDB = async (model, arguments, findData) => {
 };
 
 const postDB = async (model, arguments, query) => {
-  const { data } = query;
-
-  return model[arguments](data);
+  const { data, id, _id } = query;
+  return model[arguments](data || id || { _id });
 };
 
-module.exports = async (model, arguments, query, exp = 60) => {
+const redisQuery = async (model, arguments, query, exp = 60) => {
   if (!model && !arguments) {
     return "requert model or argument";
   }
@@ -68,6 +72,7 @@ module.exports = async (model, arguments, query, exp = 60) => {
   const findArguments = await notSet.filter(
     (filterKey) => filterKey === arguments
   );
+
   const client = await bluebird.promisifyAll(redis.createClient(redisOption));
   const cached = await client.getAsync(key);
 
@@ -79,7 +84,7 @@ module.exports = async (model, arguments, query, exp = 60) => {
     }
 
     if (cached) {
-      const redis = await JSON.parse(cached).data;
+      const redis = await JSON.parse(cached);
       if (
         (redis && filter === redis.filter) ||
         sort === redis.sort ||
@@ -112,4 +117,59 @@ module.exports = async (model, arguments, query, exp = 60) => {
     const res = await postDB(model, arguments, query);
     return res;
   }
+};
+
+const clearKey = async () => {
+  const client = await bluebird.promisifyAll(redis.createClient(redisOption));
+  const keys = [];
+
+  try {
+    await client.keys("*", async (err, keys) => {
+      if (keys.length > 0) {
+        for (let i = 0, len = keys.length; i < len; i++) {
+          keys.push(keys[i]);
+          await client.del(keys[i]);
+        }
+      }
+    });
+    return { keys, message: "success" };
+  } catch (err) {
+    return { keys, message: err };
+  }
+};
+
+const clearKeyById = async (id) => {
+  const client = await bluebird.promisifyAll(redis.createClient(redisOption));
+  const cached = await client.getAsync(key);
+
+  if (cached) {
+    await client.del(id);
+    return { key: id, message: "success" };
+  }
+  return { message: "id not found" };
+};
+
+const getKey = async () => {
+  const client = await bluebird.promisifyAll(redis.createClient(redisOption));
+  const keys = [];
+
+  try {
+    await client.keys("*", async (err, keys) => {
+      if (keys.length > 0) {
+        for (let i = 0, len = keys.length; i < len; i++) {
+          keys.push(keys[i]);
+        }
+      }
+    });
+    return { keys };
+  } catch (err) {
+    return { message: err };
+  }
+};
+
+module.exports = {
+  redisQuery,
+  clearKey,
+  getKey,
+  clearKeyById,
 };
