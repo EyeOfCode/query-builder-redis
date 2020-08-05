@@ -20,6 +20,13 @@ or
 const queryBuilderRedis = require('query-builder').queryBuilderRedis;
 ```
 
+Use query builder mongoose
+```js
+const { queryBuilder } = require('query-builder'); 
+or 
+const queryBuilderRedis = require('query-builder').queryBuilder;
+```
+
 Config on env file
 ```env
 REDIS_PORT=6379
@@ -40,13 +47,6 @@ Config on docker (optional)
 volumes:
   redis-data:
     driver: local
-```
-
-Use query builder mongoose
-```js
-const { queryBuilder } = require('query-builder'); 
-or 
-const queryBuilderRedis = require('query-builder').queryBuilder;
 ```
 
 # Example use
