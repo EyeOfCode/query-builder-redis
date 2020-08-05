@@ -1,4 +1,4 @@
-# query-builder-redis [BETA]
+# query-builder-redis [BETA v1.1.0]
 
 Exp lib query mongoose by redis
 
