@@ -36,7 +36,7 @@ const res = await queryBuilder.getQuery(model, Query);
 ```
 
 | Arguments  | Query | Description |
-| --- | --- |
+| --- | --- | --- |
 | `getList`  | { find: `{}`, offset: `1`,size: `10`,sort: `{ updateAt: 1 }`} | Can use select = `{Object}` and `String` and populate = `{Object}` |
 | `getQuery`  | `{Object}` | Can use select = `{Object}` and `String` and populate = `{Object}` |
 | `getById` | `{Object}` | Can use populate = `{Object}` |
