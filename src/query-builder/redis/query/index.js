@@ -50,6 +50,10 @@ const getDB = async (model, arguments, findData) => {
 
 const postDB = async (model, arguments, query) => {
   const { data, id, _id } = query;
+  const keyArgument = arguments.split("findByIdAnd");
+  if (keyArgument.length > 0) {
+    return model[arguments](id, data);
+  }
   return model[arguments](data || id || { _id });
 };
 
@@ -59,9 +63,17 @@ const redisQuery = async (model, arguments, query, exp = 60) => {
   }
 
   let key = `${model.collection.name}-${arguments}`;
-  if (query && (query.id || query._id || arguments === "findById")) {
+  if (
+    query &&
+    (query.id ||
+      query._id ||
+      arguments === "findById" ||
+      (query.query && query.query._id))
+  ) {
     key = `${model.collection.name}-${arguments}-${
-      query.id || query._id || query.query
+      query.id || query._id || typeof query.query === "string"
+        ? query.query
+        : query.query._id
     }`;
   }
 

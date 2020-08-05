@@ -73,12 +73,6 @@ const aggregateQuery = async (model, data) => {
   return redisQuery(model, "aggregate", { data });
 };
 
-const clearUserAgent = async (model, date) => {
-  return redisQuery(model, "deleteMany", {
-    data: { createdAt: { $lt: date } },
-  });
-};
-
 const clearKeyRedis = async () => {
   return clearKey();
 };
