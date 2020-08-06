@@ -1,6 +1,6 @@
-# query-builder-redis [BETA v1.1.0]
+# query-builder-redis
 
-Exp lib query mongoose by redis
+lib query data through query builder by mongoose and redis
 
 # Installation
 
@@ -27,7 +27,7 @@ or
 const queryBuilderRedis = require('query-builder').queryBuilder;
 ```
 
-Config on env file
+Config on env file default value (optional) 
 ```env
 REDIS_PORT=6379
 REDIS_HOST=redis
