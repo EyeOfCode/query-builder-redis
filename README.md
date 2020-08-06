@@ -1,6 +1,6 @@
 # query-builder-redis
 
-Exp lib query mongoose by redis
+lib query data through query builder by mongoose and redis
 
 # Installation
 
