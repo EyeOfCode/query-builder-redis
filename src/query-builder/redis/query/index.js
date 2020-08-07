@@ -63,17 +63,15 @@ const redisQuery = async (model, arguments, query, exp = 60) => {
   }
 
   let key = `${model.collection.name}-${arguments}`;
-  if (
-    query &&
-    (query.id ||
-      query._id ||
-      arguments === "findById" ||
-      (query.query && query.query._id))
-  ) {
+  if (query.id) {
+    key = `${model.collection.name}-${arguments}-${query.id}`;
+  }
+  if (query._id) {
+    key = `${model.collection.name}-${arguments}-${query._id}`;
+  }
+  if ((query.query && query.query._id) || arguments === "findById") {
     key = `${model.collection.name}-${arguments}-${
-      query.id || query._id || typeof query.query === "string"
-        ? query.query
-        : query.query._id
+      typeof query.query === "string" ? query.query : query.query._id
     }`;
   }
 
