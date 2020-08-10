@@ -57,6 +57,22 @@ const postDB = async (model, arguments, query) => {
   return model[arguments](data || id || { _id });
 };
 
+const allKeys = (client) => {
+  const setKey = [];
+
+  return new Promise((resolve, reject) => {
+    client.keys("*", (err, keys) => {
+      if (keys.length > 0) {
+        for (let i = 0; i < keys.length; i++) {
+          setKey.push(keys[i]);
+        }
+        resolve(setKey);
+      }
+      reject([]);
+    });
+  });
+};
+
 const redisQuery = async (model, arguments, query, exp = 60) => {
   if (!model && !arguments) {
     return "requert model or argument";
@@ -91,14 +107,17 @@ const redisQuery = async (model, arguments, query, exp = 60) => {
     let filter = find;
     if (!filter && typeof query.query === "string") {
       filter = query.query;
+    } else if (!filter && typeof query.query === "object") {
+      filter = JSON.stringify(query.query);
     }
 
     if (cached) {
       const redis = await JSON.parse(cached);
       if (
-        (redis && filter === redis.filter) ||
-        sort === redis.sort ||
-        size === redis.size ||
+        redis.data &&
+        filter === redis.filter &&
+        sort === redis.sort &&
+        size === redis.size &&
         offset === redis.offset
       ) {
         return JSON.parse(cached).data;
@@ -114,16 +133,16 @@ const redisQuery = async (model, arguments, query, exp = 60) => {
     );
     return res;
   } else {
-    await client.keys("*", async (err, keys) => {
-      if (keys.length > 0) {
-        for (let i = 0, len = keys.length; i < len; i++) {
-          const key = keys[i].split("-");
-          if (key[0] === model.collection.name) {
-            await client.del(keys[i]);
-          }
+    const keys = await allKeys(client);
+    if (keys.length > 0) {
+      keys.forEach((id) => {
+        const key = id.split("-");
+        if (key[0] === model.collection.name) {
+          client.del(key);
         }
-      }
-    });
+      });
+    }
+
     const res = await postDB(model, arguments, query);
     return res;
   }
@@ -131,49 +150,41 @@ const redisQuery = async (model, arguments, query, exp = 60) => {
 
 const clearKey = async () => {
   const client = await bluebird.promisifyAll(redis.createClient(redisOption));
-  const keys = [];
+  const key = [];
 
   try {
-    await client.keys("*", async (err, keys) => {
-      if (keys.length > 0) {
-        for (let i = 0, len = keys.length; i < len; i++) {
-          keys.push(keys[i]);
-          await client.del(keys[i]);
-        }
-      }
-    });
-    return { keys, message: "success" };
+    const keys = await allKeys(client);
+    if (keys.length > 0) {
+      keys.forEach((id) => {
+        key.push(id);
+        client.del(id);
+      });
+    }
+    return { remove: key, message: "success" };
   } catch (err) {
-    return { keys, message: err };
+    return { remove: [], message: "id not found" };
   }
 };
 
 const clearKeyById = async (id) => {
   const client = await bluebird.promisifyAll(redis.createClient(redisOption));
-  const cached = await client.getAsync(key);
+  const cached = await client.getAsync(id);
 
   if (cached) {
     await client.del(id);
-    return { key: id, message: "success" };
+    return { remove: id, message: "success" };
   }
   return { message: "id not found" };
 };
 
 const getKey = async () => {
   const client = await bluebird.promisifyAll(redis.createClient(redisOption));
-  const keys = [];
 
   try {
-    await client.keys("*", async (err, keys) => {
-      if (keys.length > 0) {
-        for (let i = 0, len = keys.length; i < len; i++) {
-          keys.push(keys[i]);
-        }
-      }
-    });
-    return { keys };
+    const keys = await allKeys(client);
+    return keys;
   } catch (err) {
-    return { message: err };
+    return { message: "key not found" };
   }
 };
 
