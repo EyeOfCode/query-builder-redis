@@ -1,7 +1,8 @@
 {
   "name": "query-builder-redis",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "main": "src/index.js",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git@github.com:EyeOfCode/query-builder-redis.git"
