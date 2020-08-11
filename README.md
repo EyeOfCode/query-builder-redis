@@ -27,7 +27,7 @@ or
 const queryBuilderRedis = require('query-builder').queryBuilder;
 ```
 
-Config on env file default value (optional) 
+Config on env file
 ```env
 REDIS_PORT=6379
 REDIS_HOST=redis

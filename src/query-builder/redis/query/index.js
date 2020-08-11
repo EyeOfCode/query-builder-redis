@@ -2,9 +2,9 @@ const redis = require("redis");
 const bluebird = require("bluebird");
 
 const redisOption = {
-  port: process.env.REDIS_PORT || 6379,
-  host: process.env.REDIS_HOST || "redis",
-  db: process.env.REDIS_DB || 0,
+  port: process.env.REDIS_PORT,
+  host: process.env.REDIS_HOST,
+  db: process.env.REDIS_DB,
   retry_strategy: (options) => {
     if (options.error && options.error.code === "ECONNREFUSED") {
       return new Error("The server refused the connection.");
