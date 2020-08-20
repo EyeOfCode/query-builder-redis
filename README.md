@@ -1,5 +1,8 @@
 # query-builder-redis
 
+[![Version](https://img.shields.io/npm/v/query-builder-redis.svg)](https://npmjs.org/package/query-builder-redis)
+[![Downloads/week](https://img.shields.io/npm/dw/query-builder-redis.svg)](https://npmjs.org/package/query-builder-redis)
+
 lib query data through query builder by mongoose and redis
 
 # Installation
