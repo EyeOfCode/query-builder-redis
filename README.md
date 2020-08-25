@@ -32,8 +32,8 @@ const queryBuilderRedis = require('query-builder').queryBuilder;
 
 Config on env file
 ```env
-REDIS_PORT=6379
-REDIS_HOST=redis
+REDIS_PORT=6379 (port redis)
+REDIS_HOST=redis (ip host)
 REDIS_DB=0
 ```
 Config on docker (optional)
