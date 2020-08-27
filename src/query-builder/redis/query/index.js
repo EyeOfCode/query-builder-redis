@@ -30,19 +30,18 @@ const notSet = [
 
 const getDB = async (model, arguments, findData) => {
   const { find, sort, size, offset } = findData.query;
-  let queryData = await model[arguments](find ? find : findData.query);
-  if (findData.populate) {
-    queryData = await queryData.populate(findData.populate);
-  }
-  if (findData.select) {
-    queryData = await queryData.select(findData.select);
-  }
+  let queryData = await model[arguments](find ? find : findData.query)
+    .populate(findData.populate || "")
+    .select(findData.select)
+    .sort(sort);
   if (findData.query.find) {
-    if (sort) {
-      queryData = await queryData.sort(sort);
-    }
     if (sort && size && offset) {
-      queryData = await queryData.limit(size).skip(size * (offset - 1));
+      queryData = await model[arguments](find ? find : findData.query)
+        .populate(findData.populate || "")
+        .select(findData.select)
+        .sort(sort)
+        .limit(size)
+        .skip(size * (offset - 1));
     }
   }
   return queryData;
