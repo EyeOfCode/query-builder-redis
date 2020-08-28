@@ -56,20 +56,19 @@ const postDB = async (model, arguments, query) => {
   return model[arguments](data || id || { _id });
 };
 
-const allKeys = (client) => {
+const allKeys = async (client) => {
   const setKey = [];
 
-  return new Promise((resolve, reject) => {
+  new Promise(() => {
     client.keys("*", (err, keys) => {
       if (keys.length > 0) {
         for (let i = 0; i < keys.length; i++) {
           setKey.push(keys[i]);
         }
-        resolve(setKey);
       }
-      reject([]);
     });
   });
+  return setKey;
 };
 
 const redisQuery = async (model, arguments, query, exp = 60) => {
