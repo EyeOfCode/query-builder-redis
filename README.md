@@ -55,29 +55,29 @@ volumes:
 # Example use
 
 ```js
-const res = await queryBuilderRedis.getQuery(model, Query);
+const res = await queryBuilderRedis.getQuery(model, Query, 60);
 or
-const res = await queryBuilder.getQuery(model, Query);
+const res = await queryBuilder.getQuery(model, Query, 60);
 ```
 
 # Support
 
-| Arguments  | Query | Description |
+| Arguments  | Query | Description | Exp
 | --- | --- | --- |
-| `getList`  | { find: `{}`, offset: `1`,size: `10`,sort: `{ updateAt: 1 }`} | Can use select = `{Object}` and `String` and populate = `{Object}` |
-| `getQuery`  | `{Object}` | Can use select = `{Object}` and `String` and populate = `{Object}` |
-| `getById` | `{Object}` | Can use populate = `{Object}` |
-| `getOne` | `{Object}` | Can use populate = `{Object}` |
-| `getSoftDelete` | `{Object}` | Can use populate = `{Object}` |
-| `create` | `{Object}` | ... |
-| `update` | `id`, `{Object}` | `func(model, id, {data})` |
+| `getList`  | { find: `{}`, offset: `1`,size: `10`,sort: `{ updateAt: 1 }`} | Can use select = `{Object}` and `String` and populate = `{Object}` | `getList(model, query, exp)` exp = [int]
+| `getQuery`  | `{Object}` | Can use select = `{Object}` and `String` and populate = `{Object}` | `getQuery(model, query, select, populate, exp)` exp = [int]
+| `getById` | `{Object}` | Can use populate = `{Object}` | `getById(model, query, populate, exp)` exp = [int]
+| `getOne` | `{Object}` | Can use populate = `{Object}` | `getOne(model, query, populate, exp)` exp = [int]
+| `getSoftDelete` | `{Object}` | Can use populate = `{Object}` | `getSoftDelete(model, query, populate, exp)` exp = [int]
+| `create` | `{Object}` | ... | `create(model, data)`
+| `update` | `id`, `{Object}` | `func(model, id, {data})` | `update(model, id, data)`
 | `destroy` | `id` | ... |
-| `softDelete` | `id` | Change status deleted to `true` |
-| `restore` | `id` | Change status deleted to `false` after soft delete |
-| `getTotal` | `{Object}` | Count documents |
+| `softDelete` | `id` | Change status deleted to `true` | `softDelete(model, id)`
+| `restore` | `id` | Change status deleted to `false` after soft delete | `restore(model, id)`
+| `getTotal` | `{Object}` | Count documents | `getTotal(model, query, exp)` exp = [int]
 | `destroyMany` | `{Object}` | ... |
-| `getPagination` | `{Object}`, page = `1`, perpage = `10` | Get pagination `func({data}, page, perpage)` |
-| `aggregateQuery` | `{Object}` | Can use script aggregate mongoose |
-| `clearKeyRedis` |  | Clear key redis all |
-| `getKeyRedis` |  | Get all key redis |
-| `clearKeyRedisById` | `key` | Clear redis by `key` |
+| `getPagination` | `{Object}`, page = `1`, perpage = `10` | Get pagination `func({data}, page, perpage)` | `getPagination(model, query, page, perpage, exp)` exp = [int]
+| `aggregateQuery` | `{Object}` | Can use script aggregate mongoose | `aggregateQuery(model, data, exp)` exp = [int]
+| `clearKeyRedis` |  | Clear key redis all | `clearKeyRedis()`
+| `getKeyRedis` |  | Get all key redis | `getKeyRedis()`
+| `clearKeyRedisById` | `key` | Clear redis by `key` | `clearKeyRedisById(id)`
