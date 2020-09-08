@@ -35,7 +35,7 @@ const create = async (model, data) => {
   return redisQuery(model, "create", { data });
 };
 
-const update = async (model, id, data, exp) => {
+const update = async (model, id, data) => {
   return redisQuery(model, "findByIdAndUpdate", { id, data });
 };
 
