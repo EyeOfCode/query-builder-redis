@@ -63,7 +63,7 @@ const res = await queryBuilder.getQuery(model, Query, 60);
 # Support
 
 | Arguments  | Query | Description | Exp |
-| --- | --- | --- |
+| --- | --- | --- | --- |
 | `getList`  | { find: `{}`, offset: `1`,size: `10`,sort: `{ updateAt: 1 }`} | Can use select = `{Object}` and `String` and populate = `{Object}` | `getList(model, query, exp)` exp = [int] |
 | `getQuery`  | `{Object}` | Can use select = `{Object}` and `String` and populate = `{Object}` | `getQuery(model, query, select, populate, exp)` exp = [int] |
 | `getById` | `{Object}` | Can use populate = `{Object}` | `getById(model, query, populate, exp)` exp = [int] |
