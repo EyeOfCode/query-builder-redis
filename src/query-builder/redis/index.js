@@ -9,32 +9,33 @@ const getList = async (
     sort: { updateAt: 1 },
   },
   populate = "",
-  select
+  select,
+  exp
 ) => {
-  return redisQuery(model, "find", { query, select, populate });
+  return redisQuery(model, "find", { query, select, populate }, exp);
 };
 
-const getQuery = async (model, query = {}, select, populate) => {
-  return redisQuery(model, "find", { query, select, populate });
+const getQuery = async (model, query = {}, select, populate, exp) => {
+  return redisQuery(model, "find", { query, select, populate }, exp);
 };
 
-const getById = async (model, query, populate) => {
-  return redisQuery(model, "findById", { query, populate });
+const getById = async (model, query, populate, exp) => {
+  return redisQuery(model, "findById", { query, populate }, exp);
 };
 
-const getOne = async (model, query, populate) => {
-  return redisQuery(model, "findOne", { query, populate });
+const getOne = async (model, query, populate, exp) => {
+  return redisQuery(model, "findOne", { query, populate }, exp);
 };
 
-const getSoftDelete = async (model, query, populate) => {
-  return redisQuery(model, "findDeleted", { query, populate });
+const getSoftDelete = async (model, query, populate, exp) => {
+  return redisQuery(model, "findDeleted", { query, populate }, exp);
 };
 
 const create = async (model, data) => {
   return redisQuery(model, "create", { data });
 };
 
-const update = async (model, id, data) => {
+const update = async (model, id, data, exp) => {
   return redisQuery(model, "findByIdAndUpdate", { id, data });
 };
 
@@ -50,16 +51,16 @@ const restore = async (model, id) => {
   return redisQuery(model, "restore", { _id: id });
 };
 
-const getTotal = async (model, query = {}) => {
-  return redisQuery(model, "countDocuments", { query });
+const getTotal = async (model, query = {}, exp) => {
+  return redisQuery(model, "countDocuments", { query }, exp);
 };
 
 const destroyMany = async (model, data) => {
   return redisQuery(model, "deleteMany", { data });
 };
 
-const getPagination = async (model, query, page = 1, perpage = 10) => {
-  const totalDocument = await getTotal(model, query);
+const getPagination = async (model, query, page = 1, perpage = 10, exp) => {
+  const totalDocument = await getTotal(model, query, exp);
   const totalPage = await Math.ceil(totalDocument / perpage);
   return {
     total: totalDocument,
@@ -69,8 +70,8 @@ const getPagination = async (model, query, page = 1, perpage = 10) => {
   };
 };
 
-const aggregateQuery = async (model, data) => {
-  return redisQuery(model, "aggregate", { data });
+const aggregateQuery = async (model, data, exp) => {
+  return redisQuery(model, "aggregate", { data }, exp);
 };
 
 const clearKeyRedis = async () => {

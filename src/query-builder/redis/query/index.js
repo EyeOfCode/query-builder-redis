@@ -70,7 +70,7 @@ const allKeys = async (client) => {
   return setKey;
 };
 
-const redisQuery = async (model, arguments, query, exp = 60) => {
+const redisQuery = async (model, arguments, query, exp) => {
   if (!model && !arguments) {
     return "requert model or argument";
   }
@@ -126,7 +126,7 @@ const redisQuery = async (model, arguments, query, exp = 60) => {
       key,
       JSON.stringify({ data: res, filter, sort, size, offset }),
       "EX",
-      exp
+      typeof exp === "number" ? +exp : 60
     );
     return res;
   } else {
