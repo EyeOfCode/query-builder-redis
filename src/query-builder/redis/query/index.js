@@ -23,7 +23,6 @@ const notSet = [
   "remove",
   "deleteMany",
   "aggregate",
-  "update",
   "updateOne",
   "updateMany",
 ];
@@ -51,9 +50,9 @@ const postDB = async (model, arguments, query) => {
   const { data, id, _id } = query;
   const keyArgument = arguments.split("findByIdAnd");
   if (keyArgument.length > 1) {
-    return model[arguments](id, data);
+    return model[arguments](id, { ...data });
   }
-  return model[arguments](data || id || { _id });
+  return model[arguments]({ ...data } || id || _id);
 };
 
 const allKeys = async (client) => {
