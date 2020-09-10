@@ -57,7 +57,7 @@ volumes:
 ```js
 const res = await queryBuilderRedis.getQuery(model, Query, 60);
 or
-const res = await queryBuilder.getQuery(model, Query, 60);
+const res = await queryBuilder.getQuery(model, Query);
 ```
 
 # Support
