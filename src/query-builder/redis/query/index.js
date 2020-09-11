@@ -1,5 +1,4 @@
-const redis = require("redis");
-const bluebird = require("bluebird");
+const redis = require("handy-redis");
 
 const redisOption = {
   port: process.env.REDIS_PORT,
@@ -96,8 +95,8 @@ const redisQuery = async (model, arguments, query, exp) => {
     (filterKey) => filterKey === arguments
   );
 
-  const client = await bluebird.promisifyAll(redis.createClient(redisOption));
-  const cached = await client.getAsync(key);
+  const client = await redis.createHandyClient(redisOption);
+  const cached = await client.get(key);
 
   if (findArguments.length === 0) {
     const { find, sort, size, offset } = query.query;
@@ -122,7 +121,7 @@ const redisQuery = async (model, arguments, query, exp) => {
     }
 
     const res = await getDB(model, arguments, query);
-    await client.setAsync(
+    await client.set(
       key,
       JSON.stringify({ data: res, filter, sort, size, offset }),
       "EX",
@@ -146,7 +145,7 @@ const redisQuery = async (model, arguments, query, exp) => {
 };
 
 const clearKey = async () => {
-  const client = await bluebird.promisifyAll(redis.createClient(redisOption));
+  const client = await redis.createHandyClient(redisOption);
   const key = [];
 
   try {
@@ -164,8 +163,8 @@ const clearKey = async () => {
 };
 
 const clearKeyById = async (id) => {
-  const client = await bluebird.promisifyAll(redis.createClient(redisOption));
-  const cached = await client.getAsync(id);
+  const client = await redis.createHandyClient(redisOption);
+  const cached = await client.get(id);
 
   if (cached) {
     await client.del(id);
@@ -175,7 +174,7 @@ const clearKeyById = async (id) => {
 };
 
 const getKey = async () => {
-  const client = await bluebird.promisifyAll(redis.createClient(redisOption));
+  const client = await redis.createHandyClient(redisOption);
 
   try {
     const keys = await allKeys(client);
