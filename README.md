@@ -81,3 +81,15 @@ const res = await queryBuilder.getQuery(model, Query);
 | `clearKeyRedis` |  | Clear key redis all | `clearKeyRedis()` |
 | `getKeyRedis` |  | Get all key redis | `getKeyRedis()` |
 | `clearKeyRedisById` | `key` | Clear redis by `key` | `clearKeyRedisById(id)` |
+
+# Mock Test Jest
+```js
+jest.mock('handy-redis', () => ({
+  createHandyClient: jest.fn(() => ({
+    get: jest.fn(),
+    set: jest.fn(),
+    del: jest.fn(),
+    keys: jest.fn()
+  }))
+}));
+```
