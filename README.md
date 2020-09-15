@@ -64,11 +64,14 @@ const res = await queryBuilder.getQuery(model, Query);
 
 | Arguments  | Query | Description | Exp |
 | --- | --- | --- | --- |
-| `getList`  | { find: `{}`, offset: `1`,size: `10`,sort: `{ updateAt: 1 }`} | Can use select = `{Object}` and `String` and populate = `{Object}` | `getList(model, query, exp)` exp = [int] |
+| `getList`  | { find: `{}`, offset: `1`,size: `10`,sort: `{ updateAt: 1 }`} | Can use select = `{Object}` and `String` and populate = `{Object}` | `getList(model, query,select, exp)` exp = [int] |
 | `getQuery`  | `{Object}` | Can use select = `{Object}` and `String` and populate = `{Object}` | `getQuery(model, query, select, populate, exp)` exp = [int] |
 | `getById` | `{Object}` | Can use populate = `{Object}` | `getById(model, query, populate, exp)` exp = [int] |
 | `getOne` | `{Object}` | Can use populate = `{Object}` | `getOne(model, query, populate, exp)` exp = [int] |
-| `getSoftDelete` | `{Object}` | Can use populate = `{Object}` | `getSoftDelete(model, query, populate, exp)` exp = [int] |
+| `getAllSoftDeleteOnly` | `{Object}` | Can use populate = `{Object}` get only data `status = true` | `getAllSoftDeleteOnly(model, query, populate, exp)` exp = [int] |
+| `getOneSoftDeleteOnly` | `{Object}` | Can use populate = `{Object}` get only data `status = true` | `getOneSoftDeleteOnly(model, query, populate, exp)` exp = [int] |
+| `getOneSoftDelete` | `{Object}` | Can use populate = `{Object}` get all data | `getOneSoftDelete(model, query, populate, exp)` exp = [int] |
+| `getAllSoftDelete` | { find: `{}`, sort: `{ updateAt: 1 }`} | Can use select = `{Object}` and can use populate = `{Object}` get all data | `getAllSoftDelete(model, query, select, populate, exp)` exp = [int] |
 | `create` | `{Object}` | ... | `create(model, data)` |
 | `update` | `id`, `{Object}` | `func(model, id, {data})` | `update(model, id, data)` |
 | `destroy` | `id` | ... | `destroy(model, id)` |

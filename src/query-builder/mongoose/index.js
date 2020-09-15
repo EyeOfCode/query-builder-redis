@@ -31,8 +31,33 @@ const getOne = async (model, query, populate) => {
   return model.findOne(query).populate(populate).exec();
 };
 
-const getSoftDelete = async (model, query, populate) => {
+const getAllSoftDeleteOnly = async (model, query, populate) => {
   return model.findDeleted(query).populate(populate).exec();
+};
+
+const getOneSoftDeleteOnly = async (model, query, populate) => {
+  return model.findOneDeleted(query).populate(populate).exec();
+};
+
+const getSoftDeleteOne = async (model, query, populate) => {
+  return model.findOneWithDeleted(query).populate(populate).exec();
+};
+
+const getAllSoftDelete = async (
+  model,
+  query = {
+    find: {},
+    sort: { updateAt: 1 },
+  },
+  select,
+  populate = ""
+) => {
+  return model
+    .findWithDeleted(query)
+    .populate(populate)
+    .select(select)
+    .sort(sort)
+    .exec();
 };
 
 const create = async (model, data) => {
@@ -90,7 +115,10 @@ module.exports = {
   getTotal,
   destroyMany,
   getQuery,
-  getSoftDelete,
   getPagination,
   aggregateQuery,
+  getAllSoftDeleteOnly,
+  getOneSoftDeleteOnly,
+  getSoftDeleteOne,
+  getAllSoftDelete,
 };

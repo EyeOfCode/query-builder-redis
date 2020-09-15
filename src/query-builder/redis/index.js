@@ -27,8 +27,29 @@ const getOne = async (model, query, populate, exp) => {
   return redisQuery(model, "findOne", { query, populate }, exp);
 };
 
-const getSoftDelete = async (model, query, populate, exp) => {
+const getAllSoftDeleteOnly = async (model, query, populate, exp) => {
   return redisQuery(model, "findDeleted", { query, populate }, exp);
+};
+
+const getOneSoftDeleteOnly = async (model, query, populate, exp) => {
+  return redisQuery(model, "findOneDeleted", { query, populate }, exp);
+};
+
+const getOneSoftDelete = async (model, query, populate, exp) => {
+  return redisQuery(model, "findOneWithDeleted", { query, populate }, exp);
+};
+
+const getAllSoftDelete = async (
+  model,
+  query = {
+    find: {},
+    sort: { updateAt: 1 },
+  },
+  select,
+  populate = "",
+  exp
+) => {
+  return redisQuery(model, "findWithDeleted", { query, select, populate }, exp);
 };
 
 const create = async (model, data) => {
@@ -98,10 +119,13 @@ module.exports = {
   getTotal,
   destroyMany,
   getQuery,
-  getSoftDelete,
   getPagination,
   aggregateQuery,
   clearKeyRedis,
   getKeyRedis,
   clearKeyRedisById,
+  getAllSoftDeleteOnly,
+  getOneSoftDeleteOnly,
+  getOneSoftDelete,
+  getAllSoftDelete,
 };
